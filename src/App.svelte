@@ -1,8 +1,6 @@
 <script lang="ts">
   import svelteLogo from './assets/svelte.svg'
   import Counter from './lib/Counter.svelte'
-
-  console.log('Hello World')
 </script>
 
 <main>
