@@ -3,7 +3,7 @@
   import Map from './common/svelte/Map.svelte'
 </script>
 
-<SvelteUIProvider withGlobalStyles withNormalizeCSS themeObserver='dark'>
+<SvelteUIProvider withGlobalStyles withNormalizeCSS themeObserver='light'>
   <Map/>
 </SvelteUIProvider>
 

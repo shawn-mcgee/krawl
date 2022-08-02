@@ -7,11 +7,21 @@
     
     import * as L from 'leaflet'
     import 'phosphor-icons'
+    import { Grid, Header, SimpleGrid, Card, Loader, Center, Text, Title, Button, Anchor, AppShell, Space } from '@svelteuidev/core';
 
     let div
 
+    let N  = 6
+    let OF = 6
+
+    let MAP
+    let HOME
+    let MARKERS
+
+    let BREWS
+
     onMount(() => {
-        const MAP = L.map(div).setView([0, 0], 10)
+        MAP = L.map(div).setView([0, 0], 10)
 
         L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -19,8 +29,8 @@
             maxZoom: 19
         }).addTo(MAP)
 
-        const HOME    = L.marker([1, 1], {draggable:true, autoPan:true}).addTo(MAP)
-        const MARKERS = L.layerGroup()                                  .addTo(MAP)
+        HOME    = L.marker([1, 1], {draggable:true, autoPan:true}).addTo(MAP)
+        MARKERS = L.layerGroup()                                  .addTo(MAP)
 
         HOME._icon.classList.add('home')
         HOME.bindTooltip('<i class="ph-house"></i><b> Start</b>')
@@ -61,7 +71,14 @@
         )
 
         Brewery.get(geo).then((brews) => {
+            BREWS = undefined
             for(let brew of brews) {
+                brew.geo = {
+                    country: geo.country,
+                    latitude : brew.latitude ,
+                    longitude: brew.longitude,
+                }
+
                 const marker = L.marker([
                     brew.latitude ,
                     brew.longitude
@@ -90,17 +107,54 @@
                 )
             }
             MAP.flyToBounds(bounds)
+            BREWS = brews
         })
     }
     
 </script>
 
-<div id='map' bind:this={div}/>
+<AppShell>
+    <Header slot="header" height={60} override={{ p: '$mdPX' }}>
+		<Title>KRAWL</Title>
+	</Header>
+    <Grid cols={3}>
+        <Grid.Col span={1}>
+            {#if !BREWS}
+                <Center override={{height: '100vh'}}>
+                    <Loader variant='dots' size='xl'/>
+                </Center>
+            {:else}
+                {#each BREWS as brew}
+                <Card>
+                    <Title order={3}>
+                        <b on:click={()=>window.open(brew.website_url)}>{brew.name}</b>
+                    </Title>
+                    <Space h='sm'/>
+                    {#if brew.street   }<Text><em>{brew.street   }</em></Text>{/if}
+                    {#if brew.address_2}<Text><em>{brew.address_2}</em></Text>{/if}
+                    {#if brew.address_3}<Text><em>{brew.address_3}</em></Text>{/if}
+                    <Space h='xs'/>
+                    {#if brew.phone    }<Text>{Phone.format(brew.phone, brew.geo)}</Text>{/if}
+                </Card>
+                <Space h='md'/>
+                    
+                {/each}
+            {/if}
+        </Grid.Col>
+        <Grid.Col span={2}>
+            <div id='map' bind:this={div}/>
+        </Grid.Col>
+    </Grid>
+    
+</AppShell>
+
+
+
+
 
 <style>
     #map {
-        width : 100vw;/*512px;*/
-        height: 100vh;/*512px;*/
+        height: calc(100vh - 100px);/*512px;*/
     }
     :global(img.home) { filter: hue-rotate(120deg); }
 </style>
