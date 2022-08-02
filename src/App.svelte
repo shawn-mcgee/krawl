@@ -1,46 +1,40 @@
-<script lang="ts">
-  import vitelogo from './assets/vite.svg'
-  import svelteLogo from './assets/svelte.svg'
-  import Counter from './lib/Counter.svelte'
+<script lang='ts'>
+
+  import { SvelteUIProvider } from '@svelteuidev/core'
+
+  import * as Location from './common/Location'
+  import * as L from 'leaflet'
+
+  let map;
+
+  Location.get().then((geo: any) => {
+    const _map = L.map(map).setView([geo.latitude, geo.longitude], 18)
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(_map);
+
+    L.marker([geo.latitude, geo.longitude]).addTo(_map)
+
+    fetch(`https://api.openbrewerydb.org/breweries?by_dist=${geo.latitude},${geo.longitude}&per_page=50`)
+    .then((data) => data.json())
+    .then((json) => {
+      for(let brew of json) {
+        L.marker([brew.latitude, brew.longitude]).addTo(_map)
+      }
+      
+    })
+  })
+
 </script>
 
-<main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank"> 
-      <img src={vitelogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank"> 
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
-</main>
+<SvelteUIProvider withGlobalStyles withNormalizeCSS themeObserver='dark'>
+  <div id='map' bind:this={map}/>
+</SvelteUIProvider>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
+  #map {
+    height: 100vh;
   }
 </style>
+

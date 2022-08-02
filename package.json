@@ -12,6 +12,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
     "@tsconfig/svelte": "^3.0.0",
+    "@types/leaflet": "^1.7.11",
     "svelte": "^3.49.0",
     "svelte-check": "^2.8.0",
     "svelte-preprocess": "^4.10.7",
@@ -20,6 +21,7 @@
     "vite": "^3.0.0"
   },
   "dependencies": {
-    "@svelteuidev/core": "^0.7.0"
+    "@svelteuidev/core": "^0.7.0",
+    "leaflet": "^1.8.0"
   }
 }
