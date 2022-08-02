@@ -1,6 +1,6 @@
 import type { Location } from "./Location"
 
-export async function get(location: Location, n:number=12,of:number=12) {
+export async function get(location: Location, n:number=6,of:number=6) {
     return await fetch(`https://api.openbrewerydb.org/breweries?by_dist=${location.latitude},${location.longitude}&per_page=${of}`)
     .then((data) => data.json())
     .then((json) => {
@@ -13,7 +13,7 @@ export async function get(location: Location, n:number=12,of:number=12) {
                 longitude: brew.longitude,
             }})
         while(n > 0) {
-            let i = rand(0, a.length)
+            let i = next(0, a.length)
             b.push(a.splice(i, 1)[0])
             n --
         }
@@ -21,8 +21,9 @@ export async function get(location: Location, n:number=12,of:number=12) {
     })
 }
 
-function rand(a, b) {
-    a = Math.ceil (a);
-    b = Math.floor(b);
-    return Math.floor(Math.random() * (b - a) + a);
+function next(a, b) {
+    return a; // ignore randomness for now
+    // a = Math.ceil (a);
+    // b = Math.floor(b);
+    // return Math.floor(Math.random() * (b - a) + a);
 }
