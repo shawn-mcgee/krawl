@@ -1,0 +1,98 @@
+<script lang='ts'>
+    import * as Phone    from '../script/Phone'
+    import * as Brewery  from '../script/Brewery'
+    import * as Location from '../script/Location'
+
+    import { onMount } from 'svelte'
+    
+    import * as L from 'leaflet'
+    import 'phosphor-icons'
+
+    let div
+
+    onMount(() => {
+        const MAP = L.map(div).setView([0, 0], 10)
+
+        L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            maxZoom: 19
+        }).addTo(MAP)
+
+        const HOME    = L.marker([1, 1], {draggable:true, autoPan:true}).addTo(MAP)
+        const MARKERS = L.layerGroup()                                  .addTo(MAP)
+
+        HOME._icon.classList.add('home')
+        HOME.bindTooltip('<i class="ph-house"></i><b> Start</b>')
+
+        Location.get().then((geo : any) => {
+            HOME.setLatLng([geo.latitude, geo.longitude]    )
+            MAP .setView  ([geo.latitude, geo.longitude], 15)
+            update(MAP, HOME, MARKERS, geo)
+        })
+
+        HOME.on('moveend', async (event) => {
+            const geo = await Location.ll2Geo(
+                HOME.getLatLng().lat,
+                HOME.getLatLng().lng
+            )
+            //HOME.setLatLng(HOME.getLatLng())
+            // MAP.flyTo     (HOME.getLatLng())
+            update(MAP, HOME, MARKERS, geo)
+        })
+
+        MAP.on('click', async (event) => {
+            const geo = await Location.ll2Geo(
+                event.latlng.lat,
+                event.latlng.lng
+            ).then()
+            HOME.setLatLng(event.latlng)
+            // MAP.flyTo     (event.latlng)
+            update(MAP, HOME, MARKERS, geo)
+        })
+    })
+
+    function update(MAP:L.Map, HOME:L.Marker, MARKERS:L.LayerGroup, geo:any) {
+        MARKERS.clearLayers()
+
+        let bounds = L.latLngBounds(
+            HOME.getLatLng(),
+            HOME.getLatLng()
+        )
+
+        Brewery.get(geo).then((brews) => {
+            for(let brew of brews) {
+                const marker = L.marker([
+                    brew.latitude ,
+                    brew.longitude
+                ]).addTo(MARKERS)
+
+                bounds.extend([
+                    brew.latitude ,
+                    brew.longitude
+                ])
+
+                const tooltip = marker.bindTooltip(
+                    `<b>${brew.name}</b><em>` + (
+                    brew.street    ? `<br/>${brew.street   }` : '' +
+                    brew.address_2 ? `<br/>${brew.address_2}` : '' +
+                    brew.address_3 ? `<br/>${brew.address_3}` : ''
+                    ) + '</em><br/>' + (brew.phone ? Phone.format(brew.phone, geo) : '')
+                )
+            }
+            MAP.flyToBounds(bounds)
+        })
+    }
+    
+</script>
+
+<div id='map' bind:this={div}/>
+
+<style>
+    #map {
+        width : 100vw;/*512px;*/
+        height: 100vh;/*512px;*/
+    }
+    :global(img.home) { filter: hue-rotate(120deg); }
+</style>
+

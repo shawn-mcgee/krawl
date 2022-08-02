@@ -27,8 +27,8 @@ export async function ip2Geo(ip?:string) {
     .then((data) => data.json())
     .then((json) => {
         return {
-            city: json.city,
-            latitude : json.latitude ,
+            country: json.country_code,
+            latitude : json.latitude,
             longitude: json.longitude
         }
     })
@@ -44,7 +44,7 @@ export async function ll2Geo(lat:number, lon:number) {
     .then((data) => data.json())
     .then((json) => {
         return {
-            city: json.address.city,
+            country: json.address.country_code,
             latitude : lat,
             longitude: lon
         }
