@@ -73,11 +73,20 @@
                 ])
 
                 const tooltip = marker.bindTooltip(
-                    `<b>${brew.name}</b><em>` + (
-                    brew.street    ? `<br/>${brew.street   }` : '' +
-                    brew.address_2 ? `<br/>${brew.address_2}` : '' +
-                    brew.address_3 ? `<br/>${brew.address_3}` : ''
-                    ) + '</em><br/>' + (brew.phone ? Phone.format(brew.phone, geo) : '')
+                    `<b>${brew.name}</b>` + 
+                    (brew.street    ? `<br/><em>${brew.street   }</em>` : '') +
+                    (brew.address_2 ? `<br/><em>${brew.address_2}</em>` : '') +
+                    (brew.address_3 ? `<br/><em>${brew.address_3}</em>` : '') +
+                    (brew.phone ? `<br/>${Phone.format(brew.phone, geo)}` : '')
+                )
+
+                const popup = marker.bindPopup(
+                    `<b>${brew.name}</b>` +  
+                    (brew.street    ? `<br/><em>${brew.street   }</em>` : '') +
+                    (brew.address_2 ? `<br/><em>${brew.address_2}</em>` : '') +
+                    (brew.address_3 ? `<br/><em>${brew.address_3}</em>` : '') +
+                    (brew.phone     ? `<br/>${Phone.format(brew.phone, geo)}` : '') +
+                    (brew.website_url ? `<br/><iframe width=300 height=640 src="${brew.website_url}"/>` : '')
                 )
             }
             MAP.flyToBounds(bounds)
