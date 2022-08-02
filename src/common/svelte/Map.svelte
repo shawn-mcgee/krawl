@@ -7,12 +7,9 @@
     
     import * as L from 'leaflet'
     import 'phosphor-icons'
-    import { Grid, Header, SimpleGrid, Card, Loader, Center, Text, Title, Button, Anchor, AppShell, Space } from '@svelteuidev/core';
+    import { Grid, Header,  Card, Loader, Center, Text, Title, AppShell, Space } from '@svelteuidev/core';
 
     let div
-
-    let N  = 6
-    let OF = 6
 
     let MAP
     let HOME
