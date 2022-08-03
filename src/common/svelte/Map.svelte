@@ -129,8 +129,8 @@
             `<b>${brew.name}</b>` + 
             (brew.street    ? `<br/><em>${brew.street   }</em>` : '') +
             (brew.address_2 ? `<br/><em>${brew.address_2}</em>` : '') +
-            (brew.address_3 ? `<br/><em>${brew.address_3}</em>` : '') +
-            (brew.phone ? `<br/>${Phone.format(brew.phone, brew.location)}` : '')
+            (brew.address_3 ? `<br/><em>${brew.address_3}</em>` : '')
+            // (brew.phone ? `<br/>${Phone.format(brew.phone, brew.location)}` : '')
         )
     }
 
@@ -139,8 +139,8 @@
             `<b>${brew.name}</b>` +  
             (brew.street    ? `<br/><em>${brew.street   }</em>` : '') +
             (brew.address_2 ? `<br/><em>${brew.address_2}</em>` : '') +
-            (brew.address_3 ? `<br/><em>${brew.address_3}</em>` : '') +
-            (brew.phone     ? `<br/>${Phone.format(brew.phone, brew.location)}` : '')
+            (brew.address_3 ? `<br/><em>${brew.address_3}</em>` : '')
+            // (brew.phone     ? `<br/>${Phone.format(brew.phone, brew.location)}` : '')
             // (brew.website_url ? `<br/><iframe width=300 height=640 src="${brew.website_url}"/>` : '')
             , {
                 keepInView  : true ,
