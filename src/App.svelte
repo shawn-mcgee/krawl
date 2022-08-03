@@ -1,11 +1,11 @@
 <script lang='ts'>
-  import { SvelteUIProvider, Card, Grid, Stack } from '@svelteuidev/core'
-  import Map from './common/svelte/Map.svelte'
-  import Itinerary from './common/svelte/Itinerary.svelte'
+  import { Grid,SvelteUIProvider } from '@svelteuidev/core';
+  import Itinerary from './common/svelte/Itinerary.svelte';
+  import Map from './common/svelte/Map.svelte';
 
-  import { BREWS_ARRAY, BREWS_INDEX, insert, remove } from './common/script/store/Brews'
+  import { BREWS_ARRAY,BREWS_INDEX } from './common/script/store/Brews';
 
-  import * as Brewery from './common/script/Brewery'
+  import * as Brewery from './common/script/Brewery';
 
   function update(event) {
     const location = event.detail

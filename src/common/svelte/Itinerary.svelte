@@ -13,7 +13,7 @@
         {#each $BREWS_ARRAY as brew, id}
             <Card shadow='xl' override={{padding:'32px'}}>
                 <Card.Section first>
-                    <Button fullSize on:click={() => $BREWS_INDEX = id} color='blue' variant={$BREWS_INDEX==id?'gradient':'subtle'} gradient={{from:'orange', to:'pink', deg:105}}>
+                    <Button fullSize on:click={() => $BREWS_INDEX = id} color='pink' variant={$BREWS_INDEX==id?'gradient':'subtle'} gradient={{from:'red', to:'grape', deg:105}}>
                         <Title order={4}>
                             <b>{brew.name}</b>
                         </Title>
@@ -34,11 +34,13 @@
                     <Space h='xs'/>
                     <Grid cols={9}>
                         <Grid.Col span={1}>
-                        {#if brew.phone       }<Text align='right'>Phone</Text>{/if}
-                        {#if brew.website_url }<Text align='right'>  Web</Text>{/if}
+                            {#if brew.phone       }<Text align='right'>Phone</Text>{/if}
+                            <Space h='xs'/>
+                            {#if brew.website_url }<Text align='right'>  Web</Text>{/if}
                         </Grid.Col>
                         <Grid.Col span={8}>
-                            {#if brew.phone      }<Text color='orange'>{Phone.format(brew.phone, brew.location)}</Text>{/if}
+                            {#if brew.phone      }<Text color='pink'>{Phone.format(brew.phone, brew.location)}</Text>{/if}
+                            <Space h='xs'/>
                             {#if brew.website_url}<Text color='pink' on:click={()=> window.open(brew.website_url)}>{brew.website_url}</Text>{/if}
                         </Grid.Col>
                     </Grid>
