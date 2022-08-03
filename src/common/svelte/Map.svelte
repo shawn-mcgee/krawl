@@ -46,8 +46,8 @@
             MAP  .setView  ([location.latitude, location.longitude], 10)
             dispatch('update', location)
 
-            MAP  .on('click'  , _onJump)
-            START.on('moveend', _onDrag)
+            MAP  .on('click'  , _onClick)
+            START.on('moveend', _onDrag )
         })
 
         unsubscribeBrewsArray = BREWS_ARRAY.subscribe(_onBrewsArrayChanged)
@@ -79,7 +79,6 @@
         UNSELECTED.clearLayers()
         if($BREWS_ARRAY.length <= 0)
             return;
-        console.log($BREWS_INDEX)
 
         const focus = L.latLngBounds(
             START.getLatLng(),
@@ -114,7 +113,8 @@
                         brew.location.latitude ,
                         brew.location.longitude,
                     ])
-                    marker.on('click'     , () => {
+                    marker.on('click'     , (event) => {
+                        L.DomEvent.stopPropagation(event)
                         $BREWS_INDEX = _index
                     })
                 }
@@ -142,10 +142,18 @@
             (brew.address_3 ? `<br/><em>${brew.address_3}</em>` : '') +
             (brew.phone     ? `<br/>${Phone.format(brew.phone, brew.location)}` : '')
             // (brew.website_url ? `<br/><iframe width=300 height=640 src="${brew.website_url}"/>` : '')
+            , {
+                keepInView  : true ,
+                closeOnClick: false,
+            }
         )
     }
 
-    function _onJump(event) {
+    function _onClick(event) {
+        console.log('click')
+        console.log($BREWS_INDEX)
+        if($BREWS_INDEX >= 0)
+            return;
         START.setLatLng(event.latlng)
         Location.ll2Geo(
             event.latlng.lat,

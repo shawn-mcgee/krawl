@@ -11,16 +11,16 @@
 {:else}
     <Stack overflow={{margin:'0, 12, 0, 12'}}>
         {#each $BREWS_ARRAY as brew, id}
-            <Card>
-                <div class='card'>
-                    <Card.Section first>
-                        <Button fullSize on:click={() => $BREWS_INDEX = id} variant={$BREWS_INDEX==id?'gradient':'outline'}>
-                            <Title order={4}>
-                                <b>{brew.name}</b>
-                            </Title>
-                        </Button>                        
-                    </Card.Section>
-                    <Space h='xs'/>
+            <Card shadow='xl' override={{padding:'24px'}}>
+                <Card.Section first>
+                    <Button fullSize on:click={() => $BREWS_INDEX = id} color='orange' variant={$BREWS_INDEX==id?'gradient':'subtle'} gradient={{from:'orange', to:'pink', deg:105}}>
+                        <Title order={4}>
+                            <b>{brew.name}</b>
+                        </Title>
+                    </Button>
+                </Card.Section>
+                <Space h='md'/>
+                <Card.Section>
                     {#if brew.street   }<Text size='lg'>{brew.street   }</Text>{/if}
                     {#if brew.address_2}<Text size='lg'>{brew.address_2}</Text>{/if}
                     {#if brew.address_3}<Text size='lg'>{brew.address_3}</Text>{/if}
@@ -42,7 +42,7 @@
                             {#if brew.website_url}<a href={brew.website_url}><Text>{brew.website_url}</Text></a>{/if}
                         </Grid.Col>
                     </Grid>
-                </div>
+                </Card.Section>
             </Card>
         {/each}
     </Stack>
@@ -52,11 +52,6 @@
     .card {
         padding: 8px 8px 8px 8px
     }
-
-    .card.selected {
-        background-color: white;
-    }
-
 </style>
 
 

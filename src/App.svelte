@@ -1,7 +1,7 @@
 <script lang='ts'>
   import { SvelteUIProvider, Card, Grid, Stack } from '@svelteuidev/core'
   import Map from './common/svelte/Map.svelte'
-  import Itinerary from './common/svelte/Itinerary.svelte';
+  import Itinerary from './common/svelte/Itinerary.svelte'
 
   import { BREWS_ARRAY, BREWS_INDEX, insert, remove } from './common/script/store/Brews'
 
@@ -9,8 +9,9 @@
 
   function update(event) {
     const location = event.detail
-    $BREWS_INDEX = - 1
+    
     $BREWS_ARRAY = [ ]
+    $BREWS_INDEX = - 1
     
     Brewery.get(location).then((brews) => {
       $BREWS_ARRAY = brews
